@@ -1,0 +1,79 @@
+package com.inacap.usodesqlite;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+
+public class CustomAdapter extends BaseAdapter {
+
+    private Context context;
+    private ArrayList<UserModel> userModelArrayList;
+
+    public CustomAdapter(Context context, ArrayList<UserModel> userModelArrayList) {
+
+        this.context            = context;
+        this.userModelArrayList = userModelArrayList;
+    }
+
+    @Override
+    public int getCount() {
+        return userModelArrayList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return userModelArrayList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+    String currentDateandTime = simpleDateFormat.format(new Date());
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+
+        if (convertView == null) {
+            holder = new ViewHolder();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.lv_item, null, true);
+
+            holder.tvspinner = (TextView) convertView.findViewById(R.id.spinner);
+            holder.tvrut     = (TextView) convertView.findViewById(R.id.rut);
+            holder.tvname    = (TextView) convertView.findViewById(R.id.name);
+            holder.tvdesc    = (TextView) convertView.findViewById(R.id.desc);
+
+
+            convertView.setTag(holder);
+        }else {
+            // the getTag returns the viewHolder object set as a tag to the view
+            holder = (ViewHolder)convertView.getTag();
+        }
+
+        holder.tvspinner.setText("Laboratorio: "+userModelArrayList.get(position).getSpinner());
+        holder.tvrut.setText("Rut: "+userModelArrayList.get(position).getRut());
+        holder.tvname.setText("Nombre: "+userModelArrayList.get(position).getName());
+        holder.tvdesc.setText("Descripcion: "+userModelArrayList.get(position).getDesc());
+        holder.viewDate.setText(currentDateandTime);
+
+        return convertView;
+    }
+
+    private class ViewHolder {
+
+        protected TextView tvspinner, tvrut, tvname, tvdesc;
+    }
+
+}
